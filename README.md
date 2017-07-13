@@ -1,16 +1,31 @@
 Deplol
 ======
 
-This is a tool for publishing Docker containers to the AWS Docker Registry,
-and for updating the pods running in your Kubernetes cluster.
+Tool for simple publishing and deployment of docker images to Kubernetes and
+the AWS Docker Registry.
+
+Features:
+
+* Publish and tag containers to AWS Docker Registry.
+* Update the pods running in your Kubernetes cluster to the latest container
+  image of a certain tag.
+* It will help you to keep your docker image tags and git tags in sync.
 
 
-Requirements for this tool
---------------------------
+Install
+-------
 
-### 1. The current working directory must be a Git repository.
+```
+npm install -g deplol
+```
 
-### 2. Required files in your project root (from where this command shall run):
+
+Usage
+-----
+
+### To publish an image to the AWS Docker Registry:
+
+Required files in your project root (from where this command shall run):
 
 * `Dockerfile`
 * `.deplol_registry`
@@ -22,32 +37,16 @@ For example:
 979723745180.dkr.ecr.eu-west-1.amazonaws.com/myserver
 ```
 
-### 3. Proper AWS credentials setup
-
-Use a AWS configuration file with your profiles, or use the standard AWS
-credentails enviroment variables:
-
-* `AWS_ACCESS_KEY_ID`
-* `AWS_SECRET_ACCESS_KEY`
-
-### 4. Kubernetes kubectl configuration
-
-Also, you need a `~/.kube/config` configuration for your Kubernetes cluster.
-
-
-To publish to Docker registry
------------------------------
-
 Run:
 
 ```
-./deplol.sh publish
+deplol publish
 ```
 
 ### To publish a Docker image using a certain tag:
 
 ```
-./deplol.sh publish <tag>
+deplol publish -t <tag>
 ```
 
 Note, this will tag the current git HEAD with the tag. To store this on your
@@ -65,15 +64,17 @@ git push origin :refs/tags/<tag>
 git push origin --tags
 ```
 
+(Note that using `--force` is a bit unsafe, since it might force other stuff
+than just overwriting tags.)
 
-To update the running version in your Kubernetes cluster
---------------------------------------------------------
 
-To update pod to your current git hash (it must have been `publish`ed
+### To update the running version in your Kubernetes cluster:
+
+To update a pod to your current git hash (it must have been `publish`ed
 first):
 
 ```
-./deplol.sh deploy <namespace>
+deplol deploy -n <namespace>
 ```
 
 The `<namespace>` is the Kubernetes namespace.
@@ -81,10 +82,10 @@ The `<namespace>` is the Kubernetes namespace.
 The Kubernetes pod deployment name is presumed to match the registry name
 (the part after `/` in your docker registry, as defined in `.deplol_registry`).
 
-### To update the pod to a specific git tag (or hash):
+### To update a running container to a specific git tag (or hash):
 
 ```
-./deplol.sh deploy <namespace> <tag/hash>
+deplol deploy -n <namespace> -t <tag/hash>
 ```
 
 This command will search your local git repo for the tag, find the corresponding

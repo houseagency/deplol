@@ -1,0 +1,33 @@
+{
+  "name": "deplol",
+  "version": "0.0.1",
+  "description": "Tool for simple publishing and deployment of docker images to Kubernetes and the AWS Docker Registry.",
+  "main": "index.js",
+  "scripts": {
+    "test": "nyc --reporter=html --reporter=text node_modules/.bin/mocha test/**/*.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/houseagency/deplol.git"
+  },
+  "keywords": [
+    "deploy",
+    "docker",
+    "kubernetes"
+  ],
+  "author": "Alfred Godoy <alfred.godoy@houseagency.se>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/houseagency/deplol/issues"
+  },
+  "homepage": "https://github.com/houseagency/deplol#readme",
+  "dependencies": {
+    "envcnf": "^1.0.1"
+  },
+  "devDependencies": {
+    "chai": "^4.0.2",
+    "mocha": "^3.4.2",
+    "nyc": "^11.0.3",
+    "testdouble": "^3.2.2"
+  }
+}
